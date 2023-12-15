@@ -1,9 +1,12 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { RGBELoader } from "three/examples/jsm/Addons";
 
 const textureLoader = new THREE.TextureLoader();
 const texture = textureLoader.load("/textures/door/color.jpg");
 texture.colorSpace = THREE.SRGBColorSpace;
+
+const rgbeLoader = new RGBELoader();
 
 /**
  * Base
@@ -13,6 +16,13 @@ const canvas = document.querySelector("canvas.webgl");
 
 // Scene
 const scene = new THREE.Scene();
+
+rgbeLoader.load("/textures/environmentMap/2k.hdr", (envirnomemtMap) => {
+  envirnomemtMap.mapping = THREE.EquirectangularReflectionMapping;
+
+  scene.background = envirnomemtMap;
+  scene.environment = envirnomemtMap;
+});
 
 //Sphere Mesh
 const sphereGeometry = new THREE.SphereGeometry(0.5, 16, 16);
